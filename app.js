@@ -1,52 +1,75 @@
-window.onload = function() {
-  onReady();
-
-};
-
 function onReady() {
+  let toDos = [];
+  let id = 0;
 
   const addToDoForm = document.getElementById('addToDoForm');
-  const newToDoText = document.getElementById('newToDoText');
-  const toDoList = document.getElementById('toDoList');
 
-  function removeToDoItem(newLi) {
-    const toDoList = newLi.parentElement;
-    toDoList.removeChild(newLi);
+  function createNewToDo() {
+    id++;
+    const newToDoText = document.getElementById('newToDoText');
+
+    
+    toDos.push({
+      title: newToDoText.value,
+      complete: false,
+      id: id,
+
+    });
+
+    if (!newToDoText.value) {
+      return;
+    }
+
+    newToDoText.value = '';
+    renderTheUI(toDos);
+  }
+
+  function deleteToDo(id) {
+    toDos = toDos.filter(item => item.id !== id);
+
+  }
+
+  function renderTheUI(toDos) {
+    const toDoList = document.getElementById('toDoList');
+
+    toDoList.textContent = '';
+
+    toDos.forEach(function(toDo, index) {
+      const newLi = document.createElement('li')
+      const checkbox = document.createElement('input');
+
+
+      newLi.setAttribute('id', 'myLi');
+
+      const removeToDo = document.createElement('input');
+      removeToDo.setAttribute('type', 'button');
+      removeToDo.setAttribute('value', 'remove');
+      removeToDo.setAttribute('id', 'removeButton');
+
+      checkbox.type = "checkbox";
+      newLi.textContent = toDo.title;
+
+      toDoList.appendChild(newLi);
+      newLi.appendChild(checkbox);
+      newLi.appendChild(removeToDo);
+
+      removeToDo.addEventListener('click', event => {
+        deleteToDo(toDo.id);
+     //   renderTheUI(toDos);
+      })
+
+    });
 
   }
 
   addToDoForm.addEventListener('submit', event => {
     event.preventDefault();
-
-    // get the text
-    let title = newToDoText.value;
-    // create a new li
-    let newLi = document.createElement('li');
-    // create a new input
-    let checkbox = document.createElement('input');
-    // set the input's type to checkbox
-    checkbox.type = "checkbox";
-    // set the title
-    newLi.textContent = title;
-    // attach the checkbox to the li
-    newLi.appendChild(checkbox);
-    // attach the li to the ul
-    toDoList.appendChild(newLi);
-    //empty the input
-    newToDoText.value = '';
-
-    const removeToDo = document.createElement('input');
-    removeToDo.setAttribute('type', 'button');
-    removeToDo.setAttribute('value', 'remove');
-    removeToDo.setAttribute('id', 'removeButton');
-
-    removeToDo.addEventListener('click', event => {
-      removeToDoItem(newLi);
-    });
-
-     newLi.appendChild(removeToDo);
+    createNewToDo();
 
   });
 
-
 }
+
+window.onload = function() {
+  onReady();
+};
