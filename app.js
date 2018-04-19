@@ -8,7 +8,7 @@ function onReady() {
     id++;
     const newToDoText = document.getElementById('newToDoText');
 
-    
+
     toDos.push({
       title: newToDoText.value,
       complete: false,
@@ -29,17 +29,14 @@ function onReady() {
 
   }
 
-  function renderTheUI(toDos) {
+  function renderTheUI() {
     const toDoList = document.getElementById('toDoList');
 
     toDoList.textContent = '';
 
-    toDos.forEach(function(toDo, index) {
+    toDos.forEach(function(toDo) {
       const newLi = document.createElement('li')
       const checkbox = document.createElement('input');
-
-
-      newLi.setAttribute('id', 'myLi');
 
       const removeToDo = document.createElement('input');
       removeToDo.setAttribute('type', 'button');
@@ -55,7 +52,7 @@ function onReady() {
 
       removeToDo.addEventListener('click', event => {
         deleteToDo(toDo.id);
-     //   renderTheUI(toDos);
+       renderTheUI();
       })
 
     });
